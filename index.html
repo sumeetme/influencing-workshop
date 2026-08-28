@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Good a Negotiator Are You? - Workshop Survey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .workshop-title {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .scale-legend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .scale-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .scale-label.left {
+            text-align: left;
+        }
+
+        .scale-label.right {
+            text-align: right;
+        }
+
+        .questions-container {
+            margin: 30px 0;
+        }
+
+        .question-item {
+            margin-bottom: 35px;
+            padding: 20px;
+            background: #fafafa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .question-item:hover {
+            background: #f0f0f0;
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .scale-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .scale-option {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scale-option input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .scale-option label {
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: #667eea;
+            color: white;
+            min-width: 180px;
+        }
+
+        .btn-submit:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #e0e0e0;
+            color: #333;
+            min-width: 180px;
+        }
+
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
+
+        .results-container {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 12px;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 15px 0;
+        }
+
+        .score-label {
+            color: #666;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .score-interpretation {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            background: white;
+        }
+
+        .interpretation-range {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .interpretation-text {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            padding: 15px;
+            background: #ffebee;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .scale-legend {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .scale-label {
+                width: 100%;
+            }
+
+            .scale-options {
+                gap: 5px;
+            }
+
+            .scale-option input[type="radio"] {
+                width: 20px;
+                height: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="workshop-title">Influencing Without Authority Workshop</div>
+            <h1>How Good a Negotiator Are You?</h1>
+            <p>Assess your negotiation strengths and development areas</p>
+        </div>
+
+        <form id="surveyForm">
+            <div class="scale-legend">
+                <div class="scale-label left">1 = Typical of me</div>
+                <div style="flex: 1;"></div>
+                <div class="scale-label right">5 = Not at all like me</div>
+            </div>
+
+            <div class="questions-container" id="questionsContainer"></div>
+
+            <div class="error-message" id="errorMessage">
+                Please answer all questions before submitting.
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-submit">Get Your Results</button>
+                <button type="reset" class="btn-reset">Clear All</button>
+            </div>
+        </form>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="score-display">
+                <div class="score-label">Your Negotiation Score</div>
+                <div class="score-number" id="scoreValue">0</div>
+                <div style="color: #666; font-size: 14px;">out of 100</div>
+            </div>
+
+            <div class="score-interpretation" id="interpretation"></div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="button" class="btn-reset" onclick="document.getElementById('resultsContainer').classList.remove('show'); document.getElementById('surveyForm').style.display = 'block'; window.scrollTo(0, 0);">Back to Survey</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "I enjoy dealing with other people, and I am committed to building relationships and creating win-win outcomes.",
+            "I have good self-esteem and tend to have a high level of aspiration and expectation.",
+            "I work to create a comfortable, professional atmosphere.",
+            "I enjoy coming up with creative solutions to problems.",
+            "I am well prepared prior to entering a negotiation.",
+            "I am able to clearly identify my bottom line in every negotiation. (If I go below or above a certain point, I will walk out)",
+            "I am willing to ask as many questions as it takes to get the information needed to make the best decision.",
+            "I communicate clearly and concisely.",
+            "I work to see each issue from my counterpart's point of view.",
+            "I confront the issues, not the person.",
+            "I focus on shared interests, not differences.",
+            "I look for ways to \"grow the pie\" rather than simply dividing up the existing pieces, thereby expanding the relationship with my counterpart.",
+            "I do not take my counterpart's strategies, tactics and comments personally.",
+            "I like to uncover the needs, wants and motivations of counterparts so I can help them achieve their goals.",
+            "I recognize the power of strategies and tactics and use them frequently.",
+            "I know how to effectively counter a counterpart's strategies and tactics.",
+            "I am willing to compromise when necessary to solve problems.",
+            "When a counterpart and I come to an agreement on an issue, I ensure that the issue is measurable and time-bound.",
+            "I am a great listener.",
+            "I present information clearly and I am a persuasive speaker."
+        ];
+
+        const scoringKey = [
+            { range: "20 – 40", interpretation: "You are not a successful negotiator – you need to build skills and knowledge in this area." },
+            { range: "40 – 60", interpretation: "You have some ability in negotiation but need to learn ways of meeting your own needs while maintaining relationships." },
+            { range: "60 – 80", interpretation: "You are a good negotiator and have developed skills to help you reach win-win negotiations." },
+            { range: "80 – 100", interpretation: "You are an excellent negotiator who has a record of successful negotiations." }
+        ];
+
+        // Initialize the survey
+        function initializeSurvey() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.innerHTML = `<span class="question-number">${index + 1}.</span> ${question}`;
+                questionDiv.appendChild(questionText);
+                
+                const scaleOptions = document.createElement('div');
+                scaleOptions.className = 'scale-options';
+                
+                for (let i = 1; i <= 5; i++) {
+                    const option = document.createElement('div');
+                    option.className = 'scale-option';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question-${index}`;
+                    input.value = i;
+                    input.id = `q${index}-${i}`;
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `q${index}-${i}`;
+                    label.textContent = i;
+                    
+                    option.appendChild(input);
+                    option.appendChild(label);
+                    scaleOptions.appendChild(option);
+                }
+                
+                questionDiv.appendChild(scaleOptions);
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let allAnswered = true;
+            let totalScore = 0;
+            
+            // Check if all questions are answered
+            for (let i = 0; i < questions.length; i++) {
+                const checked = document.querySelector(`input[name="question-${i}"]:checked`);
+                if (!checked) {
+                    allAnswered = false;
+                    break;
+                }
+                totalScore += parseInt(checked.value);
+            }
+            
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (!allAnswered) {
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            errorMessage.classList.remove('show');
+            
+            // Calculate final score (reverse scale: 1 becomes 5, 5 becomes 1)
+            const finalScore = (questions.length * 5) - totalScore + questions.length;
+            
+            // Display results
+            displayResults(finalScore);
+        });
+
+        function displayResults(score) {
+            document.getElementById('surveyForm').style.display = 'none';
+            document.getElementById('scoreValue').textContent = score;
+            
+            let interpretation = scoringKey[0];
+            if (score >= 40 && score < 60) {
+                interpretation = scoringKey[1];
+            } else if (score >= 60 && score < 80) {
+                interpretation = scoringKey[2];
+            } else if (score >= 80) {
+                interpretation = scoringKey[3];
+            }
+            
+            const interpretationDiv = document.getElementById('interpretation');
+            interpretationDiv.innerHTML = `
+                <div class="interpretation-range">Score Range: ${interpretation.range}</div>
+                <div class="interpretation-text">${interpretation.interpretation}</div>
+            `;
+            
+            document.getElementById('resultsContainer').classList.add('show');
+            window.scrollTo(0, 0);
+        }
+
+        // Handle reset
+        document.querySelector('.btn-reset').addEventListener('click', function() {
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('resultsContainer').classList.remove('show');
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeSurvey);
+    </script>
+</body>
+</html>
